@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conduit-config
+  namespace: matrix
+data:
+  SERVER_NAME: chat.techwerkers.nl
+  conduit.toml: |
+    [global]
+    server_name = "chat.techwerkers.nl"
+
+    database_backend = "rocksdb"
+    database_path = "/var/lib/matrix-conduit/"
+
+    # only enable access from reverse proxy
+    address = "0.0.0.0"
+    port = 6167
+
+    # Registration settings
+    allow_registration = true
+    # ADJUST BEFORE APPLYING!
+    registration_token = ""
+    jwt_secret = ""
+
+    # version is managed by docker compose
+    allow_check_for_updates = false
+
+    # ???
+    enable_lightning_bolt = true
+
+    # for now we do not want to federate
+    allow_federation = false
+    trusted_servers = []
+
+    # all load tweaking settings
+    rocksdb_max_open_files = 1000
+    db_cache_capacity_mb = 300.0
+    max_concurrent_requests = 100
+    max_fetch_prev_events = 100
+    pdu_cache_capacity = 150000
+    conduit_cache_capacity_modifier = 1.0
+    max_request_size = 10_000_000
+    allow_jaeger = false
+    tracing_flame = false
+
+    # Debugging
+    log = "debug"
+
+    # Matrix features
+    allow_encryption = true
+    allow_room_creation = true
+    allow_unstable_room_versions = false
+    default_room_version = "10"
+
+    # Voice settings
+    turn_username = ""
+    turn_password = ""
+    turn_uris = []
+    turn_ttl = 60

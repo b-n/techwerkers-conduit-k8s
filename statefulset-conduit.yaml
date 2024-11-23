@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: matrix-conduit
+  namespace: matrix
+spec:
+  serviceName: matrix-conduit
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matrix-conduit
+  template:
+    metadata:
+      labels:
+        app: matrix-conduit
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: conduit
+        image: registry.gitlab.com/famedly/conduit/matrix-conduit:v0.9.0  # stable
+        env:
+        - name: CONDUIT_CONFIG
+          value: "/etc/config/conduit.toml"
+        ports:
+        - name: http
+          containerPort: 6167
+        volumeMounts:
+        - name: conduit-config
+          mountPath: /etc/config
+        - name: conduit-data
+          mountPath: /var/lib/matrix-conduit
+      volumes:
+      - name: conduit-config
+        configMap:
+          name: conduit-config
+          items:
+          - key: conduit.toml
+            path: conduit.toml
+  volumeClaimTemplates:
+  - metadata:
+      name: conduit-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "microk8s-hostpath"
+      resources:
+        requests:
+          storage: 10Gi

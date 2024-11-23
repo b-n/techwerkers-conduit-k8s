@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: matrix-ingress
+ namespace: matrix
+ annotations:
+   cert-manager.io/cluster-issuer: matrix-lets-encrypt
+spec:
+ tls:
+ - hosts:
+   - chat.techwerkers.nl
+   secretName: matrix-tls
+ rules:
+ - host: chat.techwerkers.nl
+   http:
+     paths:
+     - backend:
+         service:
+           name: matrix-conduit
+           port:
+             number: 6167
+       path: /
+       pathType: Prefix

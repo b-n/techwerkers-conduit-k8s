@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrix-conduit
+  namespace: matrix
+  labels:
+    app: matrix-conduit
+spec:
+  # ClusterIP: None is to make this a headless service
+  clusterIP: None
+  ports:
+  - port: 6167
+    targetPort: 6167
+    protocol: TCP
+  selector:
+    app: matrix-conduit

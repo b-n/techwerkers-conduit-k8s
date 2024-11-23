@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: matrix-lets-encrypt
+spec:
+  acme:
+    email: nayben@gmail.com  # TODO: We'll eventually want to change this
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: matrix-lets-encrypt-private-key
+    solvers:
+    - http01:
+        ingress:
+          class: public
