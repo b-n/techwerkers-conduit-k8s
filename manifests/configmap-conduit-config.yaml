@@ -18,9 +18,9 @@ data:
 
     # Registration settings
     allow_registration = true
-    # ADJUST BEFORE APPLYING!
-    registration_token = ""
-    jwt_secret = ""
+    # Provided via secrets-conduit-secrets.yaml
+    # registration_token = ""  # CONDUIT_REGISTRATION_TOKEN
+    # jwt_secret = ""          # CONDUIT_JWT_SECRET
 
     # version is managed by docker compose
     allow_check_for_updates = false

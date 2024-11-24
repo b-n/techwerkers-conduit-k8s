@@ -29,6 +29,9 @@ spec:
           mountPath: /etc/config
         - name: conduit-data
           mountPath: /var/lib/matrix-conduit
+        envFrom:
+        - secretRef:
+            name: conduit-secrets
       volumes:
       - name: conduit-config
         configMap:

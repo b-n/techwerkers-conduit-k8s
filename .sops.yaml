@@ -1,0 +1,7 @@
+creation_rules:
+- path_regex: \.enc\.yaml$
+  unencrypted_regex: '^(apiVersion|kind|metadata|type)$'
+  age: 'age1j5n9zkhv96zstty7yvttv2x8k6a7fhr440kw7fpyns82hpue4gqsr828et'
+stores:
+  yaml:
+    indent: 2
