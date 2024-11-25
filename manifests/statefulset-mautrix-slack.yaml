@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: matrix-mautrix-slack
+  namespace: matrix
+spec:
+  serviceName: matrix-mautrix-slack
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matrix-mautrix-slack
+  template:
+    metadata:
+      labels:
+        app: matrix-mautrix-slack
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: mautrix-slack
+        image: dock.mau.dev/mautrix/slack:v0.1.3
+        command: ["/usr/bin/mautrix-slack"]
+        args:
+        - "--config"
+        - "/etc/mautrix-slack/config.yaml"
+        - "--no-update"
+        ports:
+        - name: http
+          containerPort: 29335
+        volumeMounts:
+        - name: mautrix-slack-config
+          mountPath: /etc/mautrix-slack
+        - name: mautrix-slack-data
+          mountPath: /data
+      volumes:
+      - name: mautrix-slack-config
+        secret:
+          name: mautrix-slack-config
+          items:
+          - key: config.yaml
+            path: config.yaml
+  volumeClaimTemplates:
+  - metadata:
+      name: mautrix-slack-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "microk8s-hostpath"
+      resources:
+        requests:
+          storage: 10Gi
